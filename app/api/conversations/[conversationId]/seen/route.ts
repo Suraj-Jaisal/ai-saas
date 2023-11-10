@@ -67,9 +67,8 @@ export async function POST(request: Request, { params }: { params: IParams }) {
 
     // Update last message seen
 
-    return new NextResponse("Success");
+    return NextResponse.json(updatedMessage);
   } catch (error) {
-    console.log(error, "ERROR_MESSAGES_SEEN");
     return new NextResponse("Error", { status: 500 });
   }
 }
