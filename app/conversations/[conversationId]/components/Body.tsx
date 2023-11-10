@@ -1,0 +1,62 @@
+"use client";
+
+import axios from "axios";
+import { useEffect, useRef, useState } from "react";
+
+import useConversation from "@/app/hooks/useConversation";
+import { FullMessageType } from "@/app/types";
+import { find } from "lodash";
+
+interface BodyProps {
+  initialMessages: FullMessageType[];
+}
+
+const Body: React.FC<BodyProps> = ({ initialMessages = [] }) => {
+  const bottomRef = useRef<HTMLDivElement>(null);
+  const [messages, setMessages] = useState(initialMessages);
+
+  const { conversationId } = useConversation();
+
+  useEffect(() => {
+    axios.post(`/api/conversations/${conversationId}/seen`);
+  }, [conversationId]);
+
+  useEffect(() => {
+    bottomRef?.current?.scrollIntoView();
+
+    const messageHandler = (message: FullMessageType) => {
+      axios.post(`/api/conversations/${conversationId}/seen`);
+
+      setMessages((current) => {
+        if (find(current, { id: message.id })) {
+          return current;
+        }
+
+        return [...current, message];
+      });
+
+      bottomRef?.current?.scrollIntoView();
+    };
+
+    const updateMessageHandler = (newMessage: FullMessageType) => {
+      setMessages((current) =>
+        current.map((currentMessage) => {
+          if (currentMessage.id === newMessage.id) {
+            return newMessage;
+          }
+
+          return currentMessage;
+        })
+      );
+    };
+  }, [conversationId]);
+
+  return (
+    <div className="flex-1 overflow-y-auto">
+      massage bo
+      <div className="pt-24" ref={bottomRef} />
+    </div>
+  );
+};
+
+export default Body;
