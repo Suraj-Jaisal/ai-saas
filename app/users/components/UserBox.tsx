@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { User } from "@prisma/client";
 
 import Avatar from "@/app/components/Avatar";
+import LoadingModal from "@/app/components/modals/LoadingModal";
 
 interface UserBoxProps {
   data: User;
@@ -20,12 +21,14 @@ const UserBox: React.FC<UserBoxProps> = ({ data }) => {
       .post("/api/conversations", { userId: data.id })
       .then((data) => {
         router.push(`/conversations/${data.data.id}`);
+        router.refresh();
       })
       .finally(() => setIsLoading(false));
   }, [data, router]);
 
   return (
     <>
+      {isLoading && <LoadingModal />}
       <div
         onClick={handleClick}
         className="

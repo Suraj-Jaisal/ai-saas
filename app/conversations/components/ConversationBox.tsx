@@ -26,6 +26,7 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
 
   const handleClick = useCallback(() => {
     router.push(`/conversations/${data.id}`);
+    router.refresh();
   }, [data, router]);
 
   const lastMessage = useMemo(() => {
