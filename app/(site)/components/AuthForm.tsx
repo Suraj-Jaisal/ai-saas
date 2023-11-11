@@ -61,6 +61,7 @@ const AuthForm = () => {
 
           if (callback?.ok) {
             router.push("/users");
+            router.refresh();
           }
         })
         .catch(() => toast.error("Something went wrong!"))
@@ -79,6 +80,7 @@ const AuthForm = () => {
 
           if (callback?.ok) {
             router.push("/users");
+            router.refresh();
           }
         })
         .finally(() => setIsLoading(false));
@@ -95,6 +97,7 @@ const AuthForm = () => {
 
         if (callback?.ok) {
           router.push("/conversations");
+          router.refresh();
         }
       })
       .finally(() => setIsLoading(false));

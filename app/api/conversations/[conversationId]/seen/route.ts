@@ -60,12 +60,12 @@ export async function POST(request: Request, { params }: { params: IParams }) {
       },
     });
 
+    // Update all connections with new seen
+
     // If user has already seen the message, no need to go further
     if (lastMessage.seenIds.indexOf(currentUser.id) !== -1) {
       return NextResponse.json(conversation);
     }
-
-    // Update last message seen
 
     return NextResponse.json(updatedMessage);
   } catch (error) {

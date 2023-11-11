@@ -12,6 +12,8 @@ import useConversation from "@/app/hooks/useConversation";
 import ConversationBox from "./ConversationBox";
 import { FullConversationType } from "@/app/types";
 import GroupChatModal from "@/app/components/modals/GroupChatModal";
+import { pusherClient } from "@/libs/pusher";
+import { find } from "lodash";
 
 interface ConversationListProps {
   initialItems: FullConversationType[];
@@ -57,6 +59,9 @@ const ConversationList: React.FC<ConversationListProps> = ({
 
     const newHandler = (conversation: FullConversationType) => {
       setItems((current) => {
+        if (find(current, { id: conversation.id })) {
+          return current;
+        }
         return [conversation, ...current];
       });
     };
@@ -66,6 +71,10 @@ const ConversationList: React.FC<ConversationListProps> = ({
         return [...current.filter((convo) => convo.id !== conversation.id)];
       });
     };
+
+    pusherClient.bind("conversation:update", updateHandler);
+    pusherClient.bind("conversation:new", newHandler);
+    pusherClient.bind("conversation:remove", removeHandler);
   }, [pusherKey, router]);
 
   return (

@@ -2,6 +2,7 @@ import getCurrentUser from "@/app/actions/getCurrentUser";
 import { NextResponse } from "next/server";
 
 import prisma from "../../../libs/prismadb";
+import { pusherServer } from "@/libs/pusher";
 
 export async function POST(request: Request) {
   try {
@@ -86,7 +87,11 @@ export async function POST(request: Request) {
     });
 
     // Update all connections with new conversation
-    newConversation.users.map((user) => {});
+    newConversation.users.map((user) => {
+      if (user.email) {
+        pusherServer.trigger(user.email, "conversation:new", newConversation);
+      }
+    });
 
     return NextResponse.json(newConversation);
   } catch (error) {

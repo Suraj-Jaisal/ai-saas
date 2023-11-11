@@ -32,7 +32,8 @@ const AvatarGroup: React.FC<AvatarGroupProps> = ({ users = [] }) => {
           `}
         >
           <Image
-            fill
+            width="48"
+            height="48"
             src={user?.image || "/images/placeholder.jpg"}
             alt="Avatar"
           />

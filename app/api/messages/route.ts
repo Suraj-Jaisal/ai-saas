@@ -55,6 +55,10 @@ export async function POST(request: Request) {
         },
       },
     });
+
+    const lastMessage =
+      updatedConversation.messages[updatedConversation.messages.length - 1];
+
     return NextResponse.json(newMessage);
   } catch (error) {
     return new NextResponse("Internal Error", { status: 500 });

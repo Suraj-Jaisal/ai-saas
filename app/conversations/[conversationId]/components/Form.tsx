@@ -6,7 +6,9 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { HiPaperAirplane } from "react-icons/hi";
 import { HiPhoto } from "react-icons/hi2";
 import MessageInput from "./MessageInput";
+import { useRouter } from "next/navigation";
 const Form = () => {
+  const router = useRouter();
   const { conversationId } = useConversation();
   const {
     register,
@@ -25,6 +27,7 @@ const Form = () => {
       ...data,
       conversationId: conversationId,
     });
+    router.refresh();
   };
 
   return (
